@@ -16,6 +16,8 @@ public class MainActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private List<Sensor> deviceSensors;
 
+    private Sensor sensor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,15 +25,20 @@ public class MainActivity extends AppCompatActivity {
 
         textView = findViewById(R.id.textView1);
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
-        deviceSensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+//        deviceSensors = sensorManager.getSensorList(Sensor.TYPE_ALL);
+
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        textView.setText(String.valueOf(sensor.getName()+"\n"+sensor.getVendor()+"\n"+sensor.getVersion()));
 
 //        textView.setText(deviceSensors.toString());
-        printListOfSensors();
+//        printListOfSensors();
     }
 
-    private void printListOfSensors(){
+    //======== print the list of sensors ==========
+   /* private void printListOfSensors(){
         for (Sensor sensor:deviceSensors){
             textView.setText(textView.getText()+"\n"+sensor.getName());
         }
-    }
+    }*/
 }
