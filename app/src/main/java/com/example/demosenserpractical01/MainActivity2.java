@@ -20,7 +20,7 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     private float changedValues;
 
     private Sensor temparaturedetails;
-    private boolean tempSensorIsAvailable;
+    private Boolean tempSensorIsAvailable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
