@@ -19,6 +19,9 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     private Sensor sensor;
     private float changedValues;
 
+    private Sensor temparaturedetails;
+    private boolean tempSensorIsAvailable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,13 +29,22 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
 
         textView = findViewById(R.id.textView2);
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+
+        if(sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE)!=null){
+            temparaturedetails = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+            tempSensorIsAvailable = true;
+        }else{
+            textView.setText("AMBIENT_TEMPERATURE sensor is not Available");
+            tempSensorIsAvailable = false;
+        }
     }
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
-        changedValues = sensorEvent.values[0];
-        textView.setText(String.valueOf(changedValues));
+        /*changedValues = sensorEvent.values[0];
+        textView.setText(String.valueOf(changedValues));*/
 
+        textView.setText(sensorEvent.values[0]+"°C");
     }
 
     @Override
@@ -43,13 +55,18 @@ public class MainActivity2 extends AppCompatActivity implements SensorEventListe
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+//        sensorManager.registerListener(this,sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        if(tempSensorIsAvailable){
+            sensorManager.registerListener(this, temparaturedetails, SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(this);
+        if(tempSensorIsAvailable){
+            sensorManager.unregisterListener(this);
+        }
     }
 
 }
